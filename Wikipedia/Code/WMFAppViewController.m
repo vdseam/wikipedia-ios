@@ -1210,7 +1210,7 @@ NSString *const WMFLanguageVariantAlertsLibraryVersion = @"WMFLanguageVariantAle
             
             if (latitude && longitude) {
                 [[self placesViewController] updateViewModeToMap];
-                [[self placesViewController] setPlaceWithLatitude:latitude longitude:longitude];
+                [[self placesViewController] setDeepLinkPlaceWithLatitude:latitude longitude:longitude];
             } else if (articleURL) {
                 // For "View on a map" action to succeed, view mode has to be set to map.
                 [[self placesViewController] updateViewModeToMap];

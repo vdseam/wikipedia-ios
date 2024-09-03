@@ -37,6 +37,7 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
     fileprivate let locationSearchFetcher = WMFLocationSearchFetcher()
     fileprivate let searchFetcher = WMFSearchFetcher()
     fileprivate let locationManager = LocationManager()
+    fileprivate var isDeepLinkLocated = false
     fileprivate let animationDuration = 0.6
     fileprivate let animationScale = CGFloat(0.6)
     fileprivate let popoverFadeDuration = 0.25
@@ -1952,8 +1953,10 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
         currentSearch = PlaceSearch(filter: .top, type: .location, origin: .user, sortStyle: .links, string: nil, region: region, localizedDescription: title, searchResult: searchResult, siteURL: articleURL.wmf_site)
     }
     
-    @objc public func setPlace(latitude: Double, longitude: Double) {
-        print("Latitude: \(latitude), Longitude: \(longitude)")
+    @objc public func setDeepLinkPlace(latitude: Double, longitude: Double) {
+        isDeepLinkLocated = true
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        zoomAndPanMapView(toLocation: location)
     }
     
     fileprivate func searchForFirstSearchSuggestion() {
@@ -2149,6 +2152,7 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
             promptForLocationAccess()
             return
         }
+        isDeepLinkLocated = false
         zoomAndPanMapView(toLocation: userLocation)
     }
     
@@ -2382,7 +2386,7 @@ extension PlacesViewController: MKMapViewDelegate {
 // MARK: - LocationManagerDelegate
 extension PlacesViewController: LocationManagerDelegate {
     func locationManager(_ locationManager: LocationManagerProtocol, didUpdate location: CLLocation) {
-        guard panMapToNextLocationUpdate else {
+        guard panMapToNextLocationUpdate, !isDeepLinkLocated else {
             return
         }
         panMapToNextLocationUpdate = false
