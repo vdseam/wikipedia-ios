@@ -1952,6 +1952,10 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
         currentSearch = PlaceSearch(filter: .top, type: .location, origin: .user, sortStyle: .links, string: nil, region: region, localizedDescription: title, searchResult: searchResult, siteURL: articleURL.wmf_site)
     }
     
+    @objc public func setPlace(latitude: Double, longitude: Double) {
+        print("Latitude: \(latitude), Longitude: \(longitude)")
+    }
+    
     fileprivate func searchForFirstSearchSuggestion() {
         if !searchSuggestionController.searches[PlaceSearchSuggestionController.completionSection].isEmpty {
             currentSearch = searchSuggestionController.searches[PlaceSearchSuggestionController.completionSection][0]
